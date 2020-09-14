@@ -88,12 +88,12 @@ export default class TezosKmsClient {
    * Sign the given bytes with the KMS key.
    *
    * This method will compute a digest, of the input bytes, sign them, and return the
-   * signature in Base58Check encoded notation.
+   * bytes representing the raw signature.
    *
    * @param bytes The raw bytes.
    * @returns A base58check encoded signature.
    */
-  public async signOperation(bytes: Buffer): Promise<string> {
+  public async signOperation(bytes: Buffer): Promise<Buffer> {
     const digest = Utils.blake2b(bytes, DIGEST_LENGTH)
 
     const params = {
@@ -110,10 +110,21 @@ export default class TezosKmsClient {
 
     const rawSignature = Utils.derSignatureToRaw(derSignature)
     const normalizedSignature = Utils.normalizeSignature(rawSignature)
-    const normalizedSignatureBytes = Buffer.from(normalizedSignature)
-    return Utils.base58CheckEncode(
-      normalizedSignatureBytes,
-      Prefixes.secp256k1signature,
-    )
+    return Buffer.from(normalizedSignature)
+  }
+
+  /**
+   * Sign the given bytes with the KMS key.
+   *
+   * This method will compute a digest, of the input bytes, sign them, and return the
+   * a base58check encoded signature.
+   *
+   * @param bytes The raw bytes.
+   * @returns A base58check encoded signature.
+   */
+  public async signOperationBase58(bytes: Buffer): Promise<string> {
+    const signatureBytes = await this.signOperation(bytes)
+
+    return Utils.base58CheckEncode(signatureBytes, Prefixes.secp256k1signature)
   }
 }

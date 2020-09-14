@@ -2,7 +2,7 @@
 
 ## About 
 
-`tezos-kms` is a library which contains utilities for utilizing secp256k1 with keys stored in [AWS KMS](https://aws.amazon.com/kms/) for operations in [Tezos](https://tezos.com/). 
+`tezos-kms` is a typescript library which provides functionality for using keys stored in [AWS KMS](https://aws.amazon.com/kms/) for operations in [Tezos](https://tezos.com/). 
 
 ## Configuration
 
@@ -11,7 +11,7 @@ In order to use keys you will need to configure a key in AWS KMS. Steps 1-12 of 
 ## Usage
 
 ```js
-import { TezosKmsClient } from 'TezosKms'
+import { TezosKmsClient } from '@tacoinfra/tezos-kms'
 
 const awsKeyId = "x" // Place your key here.
 const awsRegion = "eu-west-1"
@@ -22,7 +22,7 @@ console.log(await kmsClient.getPublicKey()) // sppk...
 console.log(await kmsClient.getPublicKeyHash()) // tz2...
 
 const bytes = Buffer.from('deadbeef', 'hex')
-console.log(await kmsClient.sign(bytes)) // 
+console.log(await kmsClient.sign(bytes))
 ```
 
 ## Building the Library
@@ -34,5 +34,5 @@ $ npm run build
 
 ## Credits
 
-This library is written and maintained by [Luke Youngblood](https://github.com/lyoungblood) and [Keefer Taylor](https://github.com/keefertaylor). 
+Harbinger is written and maintained by [Luke Youngblood](https://github.com/lyoungblood) and [Keefer Taylor](https://github.com/keefertaylor). 
 
