@@ -22,7 +22,8 @@ console.log(await kmsClient.getPublicKey()) // sppk...
 console.log(await kmsClient.getPublicKeyHash()) // tz2...
 
 const bytes = Buffer.from('deadbeef', 'hex')
-console.log(await kmsClient.sign(bytes))
+console.log(await kmsClient.signOperation(bytes)) // <bytes>
+console.log(await kmsClient.signOperationBase58(bytes)) // spsig...
 ```
 
 ## Building the Library
