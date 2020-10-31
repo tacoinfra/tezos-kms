@@ -16,6 +16,9 @@ const SIGNING_ALGORITHM = 'ECDSA_SHA_256'
 // Length of hash for signing in Tezos.
 const DIGEST_LENGTH = 32
 
+// Length of the public key hash for signing in Tezos.
+const PUBLIC_KEY_HASH_LENGTH = 20
+
 /** Provides capabilities for working with Tezos Keys stored in AWS KMS. */
 export default class TezosKmsClient {
   private readonly kms: KMS
@@ -81,7 +84,10 @@ export default class TezosKmsClient {
     const uncompressedPublicKeyBytes = Utils.hexToBytes(publicKeyHex)
     const publicKeyBytes = Utils.compressKey(uncompressedPublicKeyBytes)
 
-    return Utils.base58CheckEncode(publicKeyBytes, Prefixes.secp256k1PublicKey)
+    return Utils.base58CheckEncode(
+      Utils.blake2b(publicKeyBytes, PUBLIC_KEY_HASH_LENGTH),
+      Prefixes.secp256k1PublicKeyHash,
+    )
   }
 
   /**
